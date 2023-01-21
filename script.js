@@ -22,12 +22,9 @@ function displayTime() {//updates the time and colour codes the timeblocks
             setColor.setAttribute('class','present col-10 description');
         }
     }
-
-
 }
     
-$('.saveBtn').on('click', function(){
-//get the value of the textbox with the matching id. If no text, alert
+$('.saveBtn').on('click', function(){//get the value of the textbox with the matching id. If no text, alert
     var hourSaved = parseInt(this.id);    
     var textToSave = getText(hourSaved);
     if(textToSave){
@@ -35,12 +32,12 @@ $('.saveBtn').on('click', function(){
             time: hourSaved,
             description: textToSave
         }
-        console.log(saveObject);
+        updateLocalMemory(saveObject);
     }
     else{
        alert("no text input");
-    }
-    
+       updateLocalMemory("");
+    } 
 });
 
 function getText(hourClicked){ //finds the text input for the corresponding save button and returns it
@@ -53,6 +50,12 @@ function getText(hourClicked){ //finds the text input for the corresponding save
             return textInputs[i].value;
         }
     }
+}
+
+function updateLocalMemory(saveObject){
+    var savedItems = JSON.parse(localStorage.getItem("SavedItems")) || [];
+    savedItems.push(saveObject);
+    localStorage.setItem("SavedItems", JSON.stringify(savedItems));
 }
 
 
