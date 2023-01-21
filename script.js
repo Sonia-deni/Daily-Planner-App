@@ -1,7 +1,7 @@
 var timeDisplayEl = $("#currentDay");
 //var today = moment();
 
-setInterval(displayTime, 10000);
+setInterval(displayTime, 1000);
 function displayTime() {
     var currentTime = moment().format("DD MMM YYYY");
     timeDisplayEl.text(currentTime);
@@ -12,16 +12,22 @@ function displayTime() {
 
     for(var i=0; i<rows.length; i++){
         var hourToCompare = rows[i].id;
+        var setColor = rows[i];
         console.log(hourToCompare);
-        if(hourToCompare === currentHour){
-            console.log("current hour" + currentHour);
-        }
-        else if(hourToCompare > currentHour){
+        //compare the hours, and set colours accordingly
+        if(hourToCompare > currentHour){
            console.log(hourToCompare + " is after " + currentHour);
+           setColor.setAttribute('class','future col-10 description');
         }
         else if(hourToCompare < currentHour){
             console.log(hourToCompare + " is before " + currentHour);
+            setColor.setAttribute('class','past col-10 description');
         }
+        else{
+            setColor.setAttribute('class','present col-10 description');
+        }
+
+       
     }
 
 
