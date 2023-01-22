@@ -1,5 +1,6 @@
 var timeDisplayEl = $("#currentDay");
 var textInputs = $('.description');
+renderText();
 
 setInterval(displayTime, 1000); 
 function displayTime() {//updates the time and colour codes the timeblocks
@@ -32,7 +33,6 @@ $('.saveBtn').on('click', function(){
         time: hourSaved,
         description: textToSave 
     }
-    
     updateLocalMemory(saveObject);
 });
 
@@ -49,57 +49,17 @@ function getText(hourClicked){ //finds the text input for the corresponding save
 
 
 function updateLocalMemory(saveObject){
-    var savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
-    var overwrite = parseInt(saveObject.time);//gets time trying to save into
-    var overwriteText = saveObject.description;
-    var updated = false;
+    localStorage.setItem(saveObject.time, saveObject.description);
+    renderText();
+}
 
-    if(savedItems.length > 0 ){ //something already stored
-        for(var i=0; i<savedItems.length; i++){ //loop through existing saved items
-            var timeCheck = parseInt(savedItems[i].time); //get time of each item
-                if(!updated && timeCheck === overwrite) { //if the times match and there's already a description
-                    savedItems[i].description = overwriteText; //update the description to the new description
-                    localStorage.setItem("savedItems", JSON.stringify(savedItems)); 
-                    updated = true;  
-                }
-                else {
-                    savedItems.push(saveObject);
-                    localStorage.setItem("savedItems", JSON.stringify(savedItems)); 
-                }
-            }
-    }
-    else {
-        savedItems.push(saveObject);
-        localStorage.setItem("savedItems", JSON.stringify(savedItems)); 
+function renderText(){
+    var textBoxes = $('.description');
+    let keys = Object.keys(localStorage);
+    let values = Object.values(localStorage);
+
+    for(var i=0; i<keys.length;i++) { //loop through and set the text to the correct textbox
+        textBoxes[i].value = values[i];
     }
 }
-    
 
-    /*var setText;
-    for(var i=0; i<textInputs.length; i++){
-        for(var j=0; j<savedItems.length; j++){
-            if(textInputs[i].id == savedItems[j].time){
-                setText = savedItems[j].description;
-                textInputs[i].value = setText;
-            }
-        }
-       
-       
-    }*/
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-//updateLocalMemory();
