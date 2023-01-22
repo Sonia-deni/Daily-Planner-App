@@ -1,6 +1,6 @@
 var timeDisplayEl = $("#currentDay");
 var textInputs = $('.description');
-renderText();
+renderText(); //do this when page loads to check if anything already saved in local memory
 
 setInterval(displayTime, 1000); 
 function displayTime() {//updates the time and colour codes the timeblocks
@@ -47,19 +47,27 @@ function getText(hourClicked){ //finds the text input for the corresponding save
     }
 }
 
-
 function updateLocalMemory(saveObject){
     localStorage.setItem(saveObject.time, saveObject.description);
     renderText();
 }
 
 function renderText(){
-    var textBoxes = $('.description');
     let keys = Object.keys(localStorage);
-    let values = Object.values(localStorage);
 
-    for(var i=0; i<keys.length;i++) { //loop through and set the text to the correct textbox
-        textBoxes[i].value = values[i];
+    for(var i=0; i<keys.length;i++) { //loop through all the keys
+        var textValues = window.localStorage.getItem(keys[i]); //get the value for the current key
+        var textEl = findText(parseInt(keys[i])); //find the text area that goes with the current key
+        textEl.value = textValues; //set the text to display
     }
 }
 
+ function findText(key){ //take the key and find the textarea with the matching id
+    var textEls = $('.description');
+    for(var i=0; i<textEls.length;i++){
+        id = parseInt(textEls[i].id);
+        if(id === key )
+        return textEls[i];
+    }
+    
+}
