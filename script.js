@@ -71,3 +71,12 @@ function renderText(){
     }
     
 }
+
+$("#reset").on("click", function(){ //clear local storage and text inputs
+    localStorage.clear();
+    var clearText = $('.description');
+    for(var i=0; i<clearText.length; i++){
+        clearText[i].value="";
+    }
+    renderText();
+})
